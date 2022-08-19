@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Iniciar Sesion</title>
+  <meta charset="UTF-8">
+  <span th:replace="/templates/base.html::head"></span>
+  <style>
+    .card{
+      width:50%
+    }
+    button,a {
+      width:100%
+    }
+  </style>
+</head>
+<body>
+<div class="container h-100">
+  <div class="row h-100 justify-content-center align-items-center">
+    <div class="card bg-dark text-white">
+      <div class="card-body">
+        <form method="post" action="/login">
+          <div class="mb-3 mt-3">
+            <label for="user" class="form-label">Usuario:</label>
+            <input type="text" class="form-control" id="user" placeholder="Ingresar usuario" name="user">
+          </div>
+          <div class="mb-2">
+            <label for="pass" class="form-label">Contraseña:</label>
+            <input type="password" id="pass" class="form-control" placeholder="Ingresar contraseña" name="pass">
+          </div>
+          <a href="/registrar" class="btn btn-link mb-2">Registrar nuevo usuario</a>
+          <button type="submit" class="btn btn-success mb-2">Iniciar Sesion</button>
+          <a href="/" class="btn btn-primary mb-2">Volver</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
