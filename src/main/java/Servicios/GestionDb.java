@@ -1,5 +1,6 @@
 package Servicios;
 
+import Clases.URL;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -114,6 +115,18 @@ public class GestionDb<T> {
         } finally {
             em.close();
         }
+    }
+
+    public T findURL(String shortUrl){
+        EntityManager em = getEntityManager();
+        T url;
+        try {
+            url = em.createQuery("SELECT c FROM URL c WHERE c.shortURL LIKE " + shortUrl, claseEntidad).getSingleResult();
+        }catch (NoResultException e){
+            url = null;
+        }
+
+        return url;
     }
 
     /**
