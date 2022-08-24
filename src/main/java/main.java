@@ -45,9 +45,6 @@ public class main {
             config.enableCorsForAllOrigins();
         }).start(7000);
 
-        new ControladorUsuarios(app).aplicarRuta();
-        new ControladorURL(app).aplicarRuta();
-
         app.get("/",ctx -> {
             ctx.redirect("/inicio");
         });
@@ -64,6 +61,9 @@ public class main {
             modelo.put("role",ctx.cookie("role"));
             ctx.render("templates/inicio.html",modelo);
         });
+
+        new ControladorUsuarios(app).aplicarRuta();
+        new ControladorURL(app).aplicarRuta();
 
 
         System.out.println(new shortenerURL().encode(1000));
