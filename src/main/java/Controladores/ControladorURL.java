@@ -12,8 +12,10 @@ import io.javalin.Javalin;
 import java.lang.module.FindException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -29,6 +31,21 @@ public class ControladorURL {
 
     public void aplicarRuta(){
         app.routes(() -> {
+            app.get("/{id}",ctx -> {
+                String id = ctx.pathParam("id");
+                URL url = surl.findShortUrl(id);
+
+                if(url != null){
+                    List<String> result = getInfoUser(ctx.userAgent());
+                    String ip = ctx.req.getRemoteAddr();
+                    svurl.crear(new VisitaURL(url,result.get(0),ip,result.get(1)));
+                    ctx.redirect(url.getLongUrl());
+                }
+                else {
+                    ctx.redirect("/inicio");
+                }
+
+            });
             path("/url", () -> {
                 post("/acortar", ctx -> {
                     String url = ctx.formParam("url");
@@ -83,5 +100,58 @@ public class ControladorURL {
                 });
             });
         });
+    }
+
+    public static List<String> getInfoUser(String browserDetails){
+        List<String> result = new ArrayList<String>();
+        String userAgent = browserDetails;
+        String user = userAgent.toLowerCase();
+
+        String os = "";
+        String browser = "";
+
+        if (userAgent.toLowerCase().contains("windows"))
+        {
+            os = "Windows";
+        } else if(userAgent.toLowerCase().contains("mac"))
+        {
+            os = "Mac";
+        } else if(userAgent.toLowerCase().contains("x11"))
+        {
+            os = "Unix";
+        } else if(userAgent.toLowerCase().contains("android"))
+        {
+            os = "Android";
+        } else if(userAgent.toLowerCase().contains("iphone"))
+        {
+            os = "IOS";
+        }else{
+            os = "UnKnown";
+        }
+
+        if (user.contains("safari") && user.contains("version"))
+        {
+            browser = "Safari";
+        } else if ( user.contains("opr") || user.contains("opera"))
+        {
+            browser = "Opera";
+        } else if (user.contains("chrome"))
+        {
+            browser = "Chrome";
+        } else if (user.contains("firefox"))
+        {
+            browser = "Firefox";
+        } else if(user.contains("rv") || user.contains("msie"))
+        {
+            browser = "Internet Explorer";
+        } else
+        {
+            browser = "UnKnown";
+        }
+
+        result.add(browser);
+        result.add(os);
+
+        return result;
     }
 }
