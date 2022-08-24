@@ -20,7 +20,7 @@ public class BootStrapServices {
         try {
             //Modo servidor H2.
             Server.createTcpServer("-tcpPort",
-                    "9093",
+                    "9092",
                     "-tcpAllowOthers",
                     "-tcpDaemon",
                     "-ifNotExists").start();
