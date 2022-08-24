@@ -81,7 +81,7 @@ public class ServicioURL extends GestionDb<URL>{
         URL url;
 
         try {
-            url = em.createQuery("SELECT c FROM URL c WHERE c.shortURL LIKE " + shortUrl + " and c.active = True", URL.class).getSingleResult();
+            url = em.createQuery("SELECT c FROM URL c WHERE c.shortURL LIKE " + "'" + shortUrl + "'" + " and c.active = True", URL.class).getSingleResult();
         }catch (NoResultException e){
             url = null;
         }
