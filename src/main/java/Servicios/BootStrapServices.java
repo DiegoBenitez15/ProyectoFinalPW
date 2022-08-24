@@ -7,7 +7,9 @@ import java.sql.SQLException;
 public class BootStrapServices {
     private static BootStrapServices instancia;
 
-    private BootStrapServices(){}
+    private BootStrapServices(){
+
+    }
 
     public static BootStrapServices getInstancia(){
         if(instancia == null){
