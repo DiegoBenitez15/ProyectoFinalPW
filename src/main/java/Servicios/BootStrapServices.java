@@ -7,7 +7,9 @@ import java.sql.SQLException;
 public class BootStrapServices {
     private static BootStrapServices instancia;
 
-    private BootStrapServices(){}
+    private BootStrapServices(){
+
+    }
 
     public static BootStrapServices getInstancia(){
         if(instancia == null){
@@ -20,7 +22,7 @@ public class BootStrapServices {
         try {
             //Modo servidor H2.
             Server.createTcpServer("-tcpPort",
-                    "9093",
+                    "9092",
                     "-tcpAllowOthers",
                     "-tcpDaemon",
                     "-ifNotExists").start();

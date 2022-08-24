@@ -61,7 +61,7 @@ public class ControladorUsuarios {
                     String password = ctx.formParam("pass");
 
                     if(!Objects.equals(usuario, "") && !Objects.equals(password, "")) {
-                        Usuario u = new Usuario(usuario,password,sr.find(1));
+                        Usuario u = new Usuario(usuario,password,sr.find(2));
 
                         if(su.find(usuario) == null){
                             su.crear(u);
