@@ -25,7 +25,12 @@
         </div>
         <script>
             $(document).ready(function(){
-                $("#resultado").text(location.hostname + ":" + location.port + "/" + [[${resultado}]]);
+
+                if(location.hostname === "localhost"){
+                    $("#resultado").text(location.hostname + ":" + location.port + "/" + [[${resultado}]]);
+                }else{
+                    $("#resultado").text(location.hostname + "/" + [[${resultado}]]);
+                }
             });
         </script>
     </span>

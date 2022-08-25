@@ -70,7 +70,7 @@ public class ServicioVistaURL extends GestionDb<VisitaURL>{
 
     public List<Integer> getSO(int id){
         EntityManager em = getEntityManager();
-        List<String> browser = Arrays.asList("Windows", "Mac", "Unix", "IOS","Android","UnKnown");
+        List<String> browser = Arrays.asList("Windows", "Apple", "Unix","Android","UnKnown");
         List<Integer> resultado = new ArrayList<>();
         for(int i = 0;i < browser.size();i++) {
             List<VisitaURL> urls;
