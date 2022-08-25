@@ -58,7 +58,7 @@ public class ControladorURL {
 
                     url = surl.createShortLink(url,usuario);
 
-
+                    ctx.sessionAttribute("longUrl",surl.findShortUrl(url).getLongUrl());
                     ctx.sessionAttribute("url",url);
 
                     ctx.redirect("/inicio");

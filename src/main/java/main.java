@@ -51,10 +51,13 @@ public class main {
         app.get("/inicio",ctx -> {
             HashMap<String, Object> modelo = new HashMap<String,Object>();
             String url = ctx.sessionAttribute("url");
+            String longUrl = ctx.sessionAttribute("longUrl");
 
             if(!Objects.equals(url, "") && url != null){
               modelo.put("resultado",url);
+              modelo.put("longUrl",longUrl);
               ctx.sessionAttribute("url","");
+              ctx.sessionAttribute("longUrl","");
             }
 
             modelo.put("usuario",ctx.cookie("usuario"));
