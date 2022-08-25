@@ -22,11 +22,9 @@
           <li class="nav-item">
             <a class="nav-link" href="/inicio"><i class="bi bi-house me-2"></i>Inicio</a>
           </li>
-          <span th:if="${usuario}">
-            <li class="nav-item">
-              <a class="nav-link" href="/url/listado"><i class="bi bi-list-ul me-2"></i>Listado</a>
-            </li>
-          </span>
+          <li class="nav-item">
+            <a class="nav-link" href="/url/listado"><i class="bi bi-list-ul me-2"></i>Listado</a>
+          </li>
           <span th:if="${role == 1}">
             <li class="nav-item">
               <a class="nav-link" href="/usuarios/administrar"><i class="bi bi-people me-2"></i>Usuarios</a>
