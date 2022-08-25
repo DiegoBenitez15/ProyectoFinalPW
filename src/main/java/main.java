@@ -64,8 +64,5 @@ public class main {
 
         new ControladorUsuarios(app).aplicarRuta();
         new ControladorURL(app).aplicarRuta();
-
-
-        System.out.println(new shortenerURL().encode(1000));
     }
 }

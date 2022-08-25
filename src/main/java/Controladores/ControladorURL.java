@@ -50,10 +50,12 @@ public class ControladorURL {
                 post("/acortar", ctx -> {
                     String url = ctx.formParam("url");
                     String id = ctx.cookie("usuario");
-                    Usuario usuario = null;
+                    String usuario = null;
 
                     if(id != null){
-                        usuario = su.find(id);
+                        usuario = su.find(id).getUsuario();
+                    }else {
+                        usuario = ctx.req.getSession().getId();
                     }
 
                     url = surl.createShortLink(url,usuario);
@@ -65,7 +67,12 @@ public class ControladorURL {
                 });
                 get("/listado",ctx -> {
                     HashMap<String,Object> modelo = new HashMap<String,Object>();
-                    modelo.put("urls",surl.findByUser(ctx.cookie("usuario"),ctx.cookie("role")));
+
+                    if(ctx.cookie("usuario") != null) {
+                        modelo.put("urls", surl.findByUser(ctx.cookie("usuario"), ctx.cookie("role")));
+                    }else{
+                        modelo.put("urls", surl.findByUser(ctx.req.getSession().getId(),"2"));
+                    }
                     modelo.put("usuario",ctx.cookie("usuario"));
                     modelo.put("role",ctx.cookie("role"));
                     ctx.render("templates/listado_url.html",modelo);

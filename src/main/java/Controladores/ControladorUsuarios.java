@@ -37,9 +37,10 @@ public class ControladorUsuarios {
                     if(!Objects.equals(usuario, "") && !Objects.equals(password, "")) {
                         Usuario u = su.find(usuario);
 
-                        if (u != null && Objects.equals(u.getPassword(), password)) {
+                        if (u != null && Objects.equals(u.getPassword(), password) && u.getActive() == Boolean.TRUE) {
                             ctx.cookie("usuario",usuario);
                             ctx.cookie("role",String.valueOf(su.find(usuario).getRole().getId()));
+                            ctx.req.getSession().invalidate();
 
                             ctx.redirect("/inicio");
                         }

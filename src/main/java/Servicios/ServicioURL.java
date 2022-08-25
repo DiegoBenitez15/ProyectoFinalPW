@@ -30,13 +30,13 @@ public class ServicioURL extends GestionDb<URL>{
         return instancia;
     }
 
-    public String createShortLink(String longUrl,Usuario usuario){
+    public String createShortLink(String longUrl,String usuario){
         UrlValidator defaultValidator = new UrlValidator();
 
         if(defaultValidator.isValid(longUrl)){
             URL url = null;
             if(usuario != null) {
-                url = this.findLongUrl(longUrl, usuario.getUsuario());
+                url = this.findLongUrl(longUrl, usuario);
             }
             if (url == null || url.getActive() == Boolean.FALSE) {
 

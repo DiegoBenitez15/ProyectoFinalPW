@@ -48,10 +48,10 @@
                   <td ><p></p></td>
                   <td th:text="${url.getLongUrl()}"></td>
                   <span th:if="${role == 1}">
-                    <span th:if="${url.getUsuario() != null}">
-                    <td th:text="${url.getUsuario().getUsuario()}"></td>
+                    <span th:if="${!url.getUsuario().contains('node')}">
+                    <td th:text="${url.getUsuario()}"></td>
                     </span>
-                    <span th:if="${url.getUsuario() == null}">
+                    <span th:if="${url.getUsuario().contains('node')}">
                     <td >Anonimo</td>
                     </span>
                   </span>
