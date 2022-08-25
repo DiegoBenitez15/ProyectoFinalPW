@@ -16,8 +16,8 @@ public class URL {
     private String longUrl;
     @Column
     private String shortURL;
-    @OneToOne
-    private Usuario usuario;
+    @Column
+    private String usuario;
     @Column
     private Date fecha_creacion = new Date();
     @Column
@@ -26,7 +26,7 @@ public class URL {
     public URL() {
     }
 
-    public URL(String longUrl, String shortURL,Usuario usuario) {
+    public URL(String longUrl, String shortURL,String usuario) {
         this.longUrl = longUrl;
         this.shortURL = shortURL;
         this.usuario = usuario;
@@ -56,16 +56,11 @@ public class URL {
         this.shortURL = shortURL;
     }
 
-    public Usuario getUsuario() {
+    public String getUsuario() {
         return usuario;
     }
 
-    public String  getUsuarioName() {
-        return usuario.getUsuario();
-    }
-
-
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
 

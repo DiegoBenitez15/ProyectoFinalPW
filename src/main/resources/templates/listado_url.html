@@ -45,18 +45,18 @@
                   <th width="20%">Accion</th>
                 </span>
 
-          </tr>
-          </thead>
-          <tbody align="center">
-          <tr th:id="'url' + ${url.getId()}" th:each="url:${urls}">
-            <td ><p></p></td>
-            <td th:text="${url.getLongUrl()}"></td>
 
-            <span th:if="${role == 1}">
-                    <span th:if="${url.getUsuario() != null}">
-                    <td th:text="${url.getUsuario().getUsuario()}"></td>
+              </tr>
+              </thead>
+              <tbody align="center">
+                <tr th:id="'url' + ${url.getId()}" th:each="url:${urls}">
+                  <td ><p></p></td>
+                  <td th:text="${url.getLongUrl()}"></td>
+                  <span th:if="${role == 1}">
+                    <span th:if="${!url.getUsuario().contains('node')}">
+                    <td th:text="${url.getUsuario()}"></td>  
                     </span>
-                    <span th:if="${url.getUsuario() == null}">
+                    <span th:if="${url.getUsuario().contains('node')}">
                     <td >Anonimo</td>
                     </span>
                   </span>
@@ -77,22 +77,25 @@
                     </span>
             </td>
 
+       
             <script>
-              $(document).ready(function(){
-                $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + ":" + location.port + "/" + [[${url.getShortUrl}]]);
-              });
-              $("#info" + [[${url.getId()}]]).click(function(){
-                document.getElementById("info_frame").src = "/url/estadisticas?id=" + [[${url.getShortURL()}]];
-              });
-              /*$("#preview" + [[${url.getId()}]]).click(function(){
-                $("#prev").attr("href", "[[${url.getLongUrl()}]]");
-              });*/
-              $("#qr" + [[${url.getId()}]]).click(function(){
-                document.getElementById("qrcode").innerHTML = "";
-                new QRCode(document.getElementById("qrcode"), location.hostname + ":" + location.port + "/url/estadisticas?id=" + [[${url.getId()}]]);
-              });
-
-
+                  $(document).ready(function(){
+                    if(location.hostname === "localhost"){
+                        $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + ":" + location.port + "/" + [[${url.getShortUrl}]]);
+                    }else{
+                        $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + "/" + [[${url.getShortUrl}]]);
+                    }
+                  });
+                  /*$("#preview" + [[${url.getId()}]]).click(function(){
+                    $("#prev").attr("href", "[[${url.getLongUrl()}]]");
+                  });*/
+                  $("#info" + [[${url.getId()}]]).click(function(){
+                    document.getElementById("info_frame").src = "/url/estadisticas?id=" + [[${url.getShortURL()}]];
+                  });
+                  $("#qr" + [[${url.getId()}]]).click(function(){
+                      document.getElementById("qrcode").innerHTML = "";
+                      new QRCode(document.getElementById("qrcode"), location.hostname + ":" + location.port + "/url/estadisticas?id=" + [[${url.getId()}]]);
+                  });
             </script>
 
             <script>
@@ -100,13 +103,12 @@
                 microlink('.link-preview',{media: ['audio' , 'iframe' , 'image' , 'logo' , 'screenshot' , 'video'],size: 'normal'})
               })
             </script>
-
-          </tr>
-          </tbody>
-        </table>
-      </div>
+           </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
 </div>
 
 </body>

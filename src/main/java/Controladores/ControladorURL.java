@@ -50,10 +50,12 @@ public class ControladorURL {
                 post("/acortar", ctx -> {
                     String url = ctx.formParam("url");
                     String id = ctx.cookie("usuario");
-                    Usuario usuario = null;
+                    String usuario = null;
 
                     if(id != null){
-                        usuario = su.find(id);
+                        usuario = su.find(id).getUsuario();
+                    }else {
+                        usuario = ctx.req.getSession().getId();
                     }
 
                     url = surl.createShortLink(url,usuario);
@@ -65,7 +67,12 @@ public class ControladorURL {
                 });
                 get("/listado",ctx -> {
                     HashMap<String,Object> modelo = new HashMap<String,Object>();
-                    modelo.put("urls",surl.findByUser(ctx.cookie("usuario"),ctx.cookie("role")));
+
+                    if(ctx.cookie("usuario") != null) {
+                        modelo.put("urls", surl.findByUser(ctx.cookie("usuario"), ctx.cookie("role")));
+                    }else{
+                        modelo.put("urls", surl.findByUser(ctx.req.getSession().getId(),"2"));
+                    }
                     modelo.put("usuario",ctx.cookie("usuario"));
                     modelo.put("role",ctx.cookie("role"));
                     ctx.render("templates/listado_url.html",modelo);
@@ -113,23 +120,24 @@ public class ControladorURL {
         if (userAgent.toLowerCase().contains("windows"))
         {
             os = "Windows";
-        } else if(userAgent.toLowerCase().contains("mac"))
+        } else if(userAgent.toLowerCase().contains("mac") || userAgent.toLowerCase().contains("iphone"))
         {
-            os = "Mac";
+            os = "Apple";
         } else if(userAgent.toLowerCase().contains("x11"))
         {
             os = "Unix";
         } else if(userAgent.toLowerCase().contains("android"))
         {
             os = "Android";
-        } else if(userAgent.toLowerCase().contains("iphone"))
-        {
-            os = "IOS";
-        }else{
+        } else{
             os = "UnKnown";
         }
 
-        if (user.contains("safari") && user.contains("version"))
+        if(user.contains("msie") || user.contains("edg"))
+        {
+            browser = "Internet Explorer";
+        }
+        else if (user.contains("safari") && (user.contains("mac") || user.contains("iphone") || user.contains("ios")))
         {
             browser = "Safari";
         } else if ( user.contains("opr") || user.contains("opera"))
@@ -141,9 +149,6 @@ public class ControladorURL {
         } else if (user.contains("firefox"))
         {
             browser = "Firefox";
-        } else if(user.contains("rv") || user.contains("msie"))
-        {
-            browser = "Internet Explorer";
         } else
         {
             browser = "UnKnown";
