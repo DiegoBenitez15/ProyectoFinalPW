@@ -73,8 +73,12 @@
 
                   <script>
                     $(document).ready(function(){
-                       $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + ":" + location.port + "/" + [[${url.getShortUrl}]]);
-                    });
+                      if(location.hostname === "localhost"){
+                          $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + ":" + location.port + "/" + [[${url.getShortUrl}]]);
+                      }else{
+                          $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + "/" + [[${url.getShortUrl}]]);
+                      }
+                  });
                     $("#info" + [[${url.getId()}]]).click(function(){
                       document.getElementById("info_frame").src = "/url/estadisticas?id=" + [[${url.getShortURL()}]];
                     });

@@ -155,13 +155,10 @@ public class GestionDb<T> {
 
     public List<T> findAllPag(int page) throws PersistenceException {
         EntityManager em = getEntityManager();
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(claseEntidad);
-        Root<T> from = criteriaQuery.from(claseEntidad);
-        CriteriaQuery<T> select = criteriaQuery.select(from);
-        TypedQuery<T> typedQuery = em.createQuery(select);
-        typedQuery.setFirstResult(page);
-        typedQuery.setMaxResults(page + 5);
-        return typedQuery.getResultList();
+        em.getTransaction().begin();
+        Query usuarios = em.createQuery("From Usuario u Where u.active = True", claseEntidad);
+        usuarios.setFirstResult(page);
+        usuarios.setMaxResults(page + 5);
+        return usuarios.getResultList();
     }
 }
