@@ -26,11 +26,22 @@ dependencies {
     implementation 'dnsjava:dnsjava:3.5.1'
     implementation 'commons-validator:commons-validator:1.7'
     implementation 'org.webjars:qrcodejs:1c78ccd'
+    implementation 'org.json:json:20220320'
 
     //Libreria para JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    //libreria para SOAP de Jetty https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-http-spi
+    implementation group: 'org.eclipse.jetty', name: 'jetty-http-spi', version: '9.4.46.v20220331'
+
+    //incluyendo las librerias de javax.ee en java 11.
+    //https://www.baeldung.com/java-soap-web-service
+    implementation "jakarta.xml.ws:jakarta.xml.ws-api:3.0.1"
+    implementation "com.sun.xml.ws:jaxws-rt:3.0.2"
+    implementation "com.sun.xml.ws:jaxws-ri:3.0.2"
+    implementation "org.glassfish.jaxb:jaxb-runtime:3.0.2"
 }
 
 test {
