@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
+    <script type="text/javascript" src="../../static/js/bootstrap.min.js"></script>
+    <script src="../static/jquery-3.6.0.min.js"></script>
+    <script src="../static/localForage/dist/localforage.js"></script>
+
+    <style>
+        .container, .row.justify-content-center.align-items-center {
+        height: 80%;
+        min-height: 80%;
+        }
+        html, body {
+        height: 90%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/inicio/sinconexion">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/listado/sinconexion">Listado</a>
+                </li>
+            </ul>
+            <ul class="nav justify-content-end navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" >Sin Conexion</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <table id="tabla" class="table table-dark table-striped"  style="border: 1px solid black; width: 100%; word-wrap:break-word;
+                      table-layout: fixed;" >
+                <thead align="center">
+                <tr>
+                      <th width="25%">ShortUrl</th>
+                      <th width="35%">LongUrl</th>
+                      <th width="20%">Usuario</th>
+                      <th width="20%">Fecha</th>
+                </tr>
+                </thead>
+                <tbody align="center">
+                <tr>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+<script>
+   $(document).ready(function(){
+       var urls = localStorage.getItem("urls");
+
+       if(urls == null){
+           localStorage.setItem("urls",JSON.stringify([]))
+           urls = localStorage.getItem("urls");
+       }
+
+       cargarFormularios(urls);
+    });
+
+     function cargarFormularios(urls){
+        var obj = JSON.parse(urls);
+        console.log(obj)
+        $("#tabla>tbody>tr").remove();
+        for(var i = 0;i < obj.length;i++){
+            var usuario;
+            var shortUrl;
+
+            if(location.hostname === "localhost"){
+                shortUrl = location.hostname + ":" + location.port + "/sl/" + obj[i].shortURL;
+            }else{
+                shortUrl = location.hostname + "/sl/" + obj[i].shortURL;
+            }
+
+            if(obj[i].usuario.includes("node")){
+                usuario = 'Anonimo';
+            }
+            else{
+                usuario = obj[i].usuario;
+            }
+
+            $("#tabla>tbody").append("<tr><td>" + shortUrl + "</td><td>" + obj[i].longUrl + "</td><td>" + usuario + "</td><td>" + obj[i].fechaString + "</td></tr>");
+        }
+     }
+</script>
+
+<script>
+    window.addEventListener('online', function(e) {
+      window.open('/url/listado','_self');
+    }, false);
+</script>
+</html>

@@ -1,21 +1,15 @@
 package Controladores;
 
 import Clases.URL;
-import Clases.Usuario;
 import Clases.VisitaURL;
-import Clases.shortenerURL;
 import Servicios.ServicioURL;
 import Servicios.ServicioUsuario;
 import Servicios.ServicioVistaURL;
 import io.javalin.Javalin;
 
-import java.lang.module.FindException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -31,7 +25,35 @@ public class ControladorURL {
 
     public void aplicarRuta(){
         app.routes(() -> {
-            app.get("/{id}",ctx -> {
+            app.get("/inicio",ctx -> {
+                HashMap<String, Object> modelo = new HashMap<String,Object>();
+                String url = ctx.sessionAttribute("url");
+                String longUrl = ctx.sessionAttribute("longUrl");
+
+                if(!Objects.equals(url, "") && url != null){
+                    modelo.put("resultado",url);
+                    modelo.put("longUrl",longUrl);
+                    ctx.sessionAttribute("url","");
+                    ctx.sessionAttribute("longUrl","");
+                }
+
+                if(ctx.cookie("usuario") != null) {
+                    modelo.put("urls", surl.findByUser(ctx.cookie("usuario"), ctx.cookie("role")));
+                }else{
+                    modelo.put("urls", surl.findByUser(ctx.req.getSession().getId(),"2"));
+                }
+
+                modelo.put("usuario",ctx.cookie("usuario"));
+                modelo.put("role",ctx.cookie("role"));
+                ctx.render("public/templates/inicio.html",modelo);
+            });
+            app.get("/inicio/sinconexion",ctx -> {
+                ctx.render("public/templates/inicio_offline.html");
+            });
+            app.get("/sinconexion",ctx -> {
+                ctx.render("public/templates/offline.html");
+            });
+            app.get("/sl/{id}",ctx -> {
                 String id = ctx.pathParam("id");
                 URL url = surl.findShortUrl(id);
 
@@ -45,6 +67,9 @@ public class ControladorURL {
                     ctx.redirect("/inicio");
                 }
 
+            });
+            get("/listado/sinconexion",ctx -> {
+                ctx.render("public/templates/listado_url_offline.html");
             });
             path("/url", () -> {
                 post("/acortar", ctx -> {
@@ -75,7 +100,7 @@ public class ControladorURL {
                     }
                     modelo.put("usuario",ctx.cookie("usuario"));
                     modelo.put("role",ctx.cookie("role"));
-                    ctx.render("templates/listado_url.html",modelo);
+                    ctx.render("public/templates/listado_url.html",modelo);
                 });
                 get("/eliminar",ctx -> {
                     String id = ctx.queryParam("id");
@@ -103,7 +128,7 @@ public class ControladorURL {
                     modelo.put("hoyClicks",svurl.getClicksHoy((int) url.getId()));
                     modelo.put("hoursClicks",svurl.getClicksHours((int) url.getId(),fecha));
                     modelo.put("totalClicks",svurl.getClicksTotal((int) url.getId()));
-                    ctx.render("/templates/estadisticas_url.html",modelo);
+                    ctx.render("/public/templates/estadisticas_url.html",modelo);
                 });
             });
         });
