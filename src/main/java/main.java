@@ -1,5 +1,6 @@
 import Controladores.ControladorURL;
 import Controladores.ControladorUsuarios;
+import Controladores.SoapControlador;
 import Servicios.BootStrapServices;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
@@ -29,6 +30,9 @@ public class main {
                 staticFileConfig.location = Location.CLASSPATH;
             });
             config.enableCorsForAllOrigins();
+            config.server(() -> {
+                return new SoapControlador().agregarWebServicesSoap();
+            });
         }).start(7000);
 
         app.get("/",ctx -> {

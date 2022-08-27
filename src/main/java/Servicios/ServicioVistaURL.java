@@ -4,6 +4,7 @@ import Clases.VisitaURL;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 
+import javax.print.DocFlavor;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -97,6 +98,57 @@ public class ServicioVistaURL extends GestionDb<VisitaURL>{
                 urls = new ArrayList<>();
             }
             resultado.add(urls.size());
+        }
+
+        return resultado;
+    }
+
+    public HashMap<String,Integer> getBroserWS(int id){
+        EntityManager em = getEntityManager();
+        List<String> browser = Arrays.asList("Chrome", "Firefox", "Opera", "Internet Explorer", "Safari","UnKnown");
+        HashMap<String,Integer> resultado = new HashMap<String,Integer>();
+        for(int i = 0;i < browser.size();i++) {
+            List<VisitaURL> urls;
+            try {
+                urls = em.createQuery("SELECT c FROM VisitaURL c WHERE c.url LIKE " + id + "and c.navegador =" + "'" + browser.get(i) + "'", VisitaURL.class).getResultList();
+            } catch (NoResultException e) {
+                urls = new ArrayList<>();
+            }
+            resultado.put(browser.get(i),urls.size());
+        }
+
+        return resultado;
+    }
+
+    public HashMap<String,Integer> getSoWS(int id){
+        EntityManager em = getEntityManager();
+        List<String> browser = Arrays.asList("Windows", "Apple", "Unix","Android","UnKnown");
+        HashMap<String,Integer> resultado = new HashMap<String,Integer>();
+        for(int i = 0;i < browser.size();i++) {
+            List<VisitaURL> urls;
+            try {
+                urls = em.createQuery("SELECT c FROM VisitaURL c WHERE c.url LIKE " + id + "and c.so =" + "'" + browser.get(i) + "'", VisitaURL.class).getResultList();
+            } catch (NoResultException e) {
+                urls = new ArrayList<>();
+            }
+            resultado.put(browser.get(i),urls.size());
+        }
+
+        return resultado;
+    }
+
+    public HashMap<String,Integer> getClicksHoursWS(int id,String fecha){
+        EntityManager em = getEntityManager();
+        HashMap<String,Integer> resultado = new HashMap<String,Integer>();
+
+        for(int i=0;i<24;i++){
+            List<VisitaURL> urls;
+            try {
+                urls = em.createQuery("SELECT c FROM VisitaURL c WHERE c.url LIKE " + id + " and CAST(c.fecha_registro AS date) = " + "'" + fecha  + "' and HOUR(c.fecha_registro) = " + "'" + i + "'", VisitaURL.class).getResultList();
+            }catch (NoResultException e){
+                urls = new ArrayList<>();
+            }
+            resultado.put(i + ":00",urls.size());
         }
 
         return resultado;
