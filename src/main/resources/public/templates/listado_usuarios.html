@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Listado Usuarios</title>
+    <meta charset="UTF-8">
+    <span th:replace="/public/templates/base.html::head"></span>
+    <nav th:replace="/public/templates/base.html::nav"></nav>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="card col-sm-12 mt-5 mb-5">
+                <div align="center" class="card-header">
+                    <h3>Listado Usuario</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <table style="text-align:center" class="table table-dark table-bordered">
+                            <thead>
+                            <th width="30%">Usuario</th>
+                            <th width="25%">Role</th>
+                            <th width="25%">Asignar</th>
+                            <th width="20%">Accion</th>
+                            </thead>
+                            <tbody>
+                            <tr th:each="u:${usuarios}">
+                                <span th:if="${usuario} != ${u.getUsuario()}">
+                                    <form method="post" th:action="'cambiar/role?usuario=' + ${u.getUsuario()}">
+                                        <td th:text="${u.getUsuario()}"></td>
+                                        <td th:text="${u.getRole().getNombre()}"></td>
+                                        <td  align="center">
+                                            <select th:id="'role' + ${u.getUsuario()}" name="role" style="width:80%" class="form-select">
+                                                <option selected value="0">------------------</option>
+                                                <option value="1">Administrador</option>
+                                                <option value="2">Usuario</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button disabled th:id="'button' + ${u.getUsuario()}" type="submit" class="btn btn-success">Aceptar</button>
+                                            <span th:if="${u.getUsuario() != 'admin'}"><a th:href="'eliminar?usuario=' + ${u.getUsuario()}" class="btn btn-danger">Eliminar</a></span>
+                                        </td>
+                                    </form>
+
+                                <script>
+                                    document.getElementById("role[[${u.getUsuario()}]]").addEventListener('change', (event) => {
+                                        if($("#role[[${u.getUsuario()}]]").val() === "0"){
+                                           document.getElementById("button[[${u.getUsuario()}]]").disabled = true;
+                                        }else{
+                                           document.getElementById("button[[${u.getUsuario()}]]").disabled = false;
+                                        }
+                                    })
+                                </script>
+                                </span>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div align="center" class="card-footer">
+                    <div class="row">
+                        <div class="form-group">
+                            <a th:href="'/usuarios/administrar?pag=' + ${pag - 5}" class="btn btn-outline-dark"> < </a>
+                            <a th:href="'/usuarios/administrar?pag=' + ${pag + 5}" class="btn btn-outline-dark"> > </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

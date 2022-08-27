@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Inicio</title>
+  <meta charset="UTF-8">
+  <span th:replace="/public/templates/base.html::head"></span>
+  <nav th:replace="/public/templates/base.html::nav"></nav>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.js"></script>
+  <!-- react + styled-components + microlink-->
+  <script src="https://cdn.jsdelivr.net/combine/npm/react@16/umd/react.production.min.js,npm/react-dom@16/umd/react-dom.production.min.js,npm/react-is@16/umd/react-is.production.min.js,npm/styled-components@5/dist/styled-components.min.js,npm/@microlink/mql@latest/dist/mql.min.js,npm/@microlink/vanilla@5/dist/microlink.min.js"></script>
+  <style>
+    .card{
+      width:90%
+    }
+    button,a {
+      width:5px
+      height:5px
+    }
+
+  </style>
+</head>
+<body>
+<div class="container h-100">
+  <div class="row h-100 justify-content-center align-items-center">
+    <div class="card">
+      <div align="center" class="card-header">
+        <h2>Listado de Urls</h2>
+      </div>
+      <div class="card-body">
+        <table class="table table-dark table-striped"  style="border: 1px solid black; width: 100%; word-wrap:break-word;
+              table-layout: fixed;" >
+          <thead align="center">
+          <tr>
+                <span th:if="${role == 1}">
+                  <th width="20%">ShortUrl</th>
+                  <th width="35%">LongUrl</th>
+                  <th width="15%">Usuario</th>
+                  <th width="10%">Fecha</th>
+                  <th width="20%">Accion</th>
+                </span>
+               <span th:if="${role != 1}">
+                  <th width="20%">ShortUrl</th>
+                  <th width="40%">LongUrl</th>
+                  <th width="20%">Fecha</th>
+                  <th width="20%">Accion</th>
+                </span>
+
+
+              </tr>
+              </thead>
+              <tbody align="center">
+                <tr th:id="'url' + ${url.getId()}" th:each="url:${urls}">
+                  <td ><p></p></td>
+                  <td th:text="${url.getLongUrl()}"></td>
+                  <span th:if="${role == 1}">
+                    <span th:if="${!url.getUsuario().contains('node')}">
+                    <td th:text="${url.getUsuario()}"></td>  
+                    </span>
+                    <span th:if="${url.getUsuario().contains('node')}">
+                    <td >Anonimo</td>
+                    </span>
+                  </span>
+            <td th:text="${url.getFechaString()}"></td>
+            <td align="center">
+              <button type="button" th:id="'qr'+ ${url.getId()}" data-bs-toggle="modal" data-bs-target="#QRModal" class="btn btn-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-qr-code pb-1" viewBox="0 0 16 16">
+                <path d="M2 2h2v2H2V2Z"/>
+                <path d="M6 0v6H0V0h6ZM5 1H1v4h4V1ZM4 12H2v2h2v-2Z"/>
+                <path d="M6 10v6H0v-6h6Zm-5 1v4h4v-4H1Zm11-9h2v2h-2V2Z"/>
+                <path d="M10 0v6h6V0h-6Zm5 1v4h-4V1h4ZM8 1V0h1v2H8v2H7V1h1Zm0 5V4h1v2H8ZM6 8V7h1V6h1v2h1V7h5v1h-4v1H7V8H6Zm0 0v1H2V8H1v1H0V7h3v1h3Zm10 1h-1V7h1v2Zm-1 0h-1v2h2v-1h-1V9Zm-4 0h2v1h-1v1h-1V9Zm2 3v-1h-1v1h-1v1H9v1h3v-2h1Zm0 0h3v1h-2v1h-1v-2Zm-4-1v1h1v-2H7v1h2Z"/>
+                <path d="M7 12h1v3h4v1H7v-4Zm9 2v2h-3v-1h2v-1h1Z"/>
+              </svg></button>
+              <button th:id="'info'+ ${url.getId()}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InfoModal"><i class="bi bi-info-circle"></i></button>
+              <!--<button th:id="'preview'+ ${url.getId()}" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#PrevModal"><i class="bi bi-eye"></i></button>-->
+
+              <span th:if="${role == 1}">
+                      <a th:href="'/url/eliminar?id=' + ${url.getId()}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                    </span>
+            </td>
+
+       
+            <script>
+                  $(document).ready(function(){
+                    if(location.hostname === "localhost"){
+                        $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + ":" + location.port + "/sl/" + [[${url.getShortUrl}]]);
+                    }else{
+                        $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + "/sl/" + [[${url.getShortUrl}]]);
+                    }
+                  });
+                  /*$("#preview" + [[${url.getId()}]]).click(function(){
+                    $("#prev").attr("href", "[[${url.getLongUrl()}]]");
+                  });*/
+                  $("#info" + [[${url.getId()}]]).click(function(){
+                    document.getElementById("info_frame").src = "/url/estadisticas?id=" + [[${url.getShortURL()}]];
+                  });
+                  $("#qr" + [[${url.getId()}]]).click(function(){
+                      document.getElementById("qrcode").innerHTML = "";
+                      new QRCode(document.getElementById("qrcode"), location.hostname + ":" + location.port + "/url/estadisticas?id=" + [[${url.getId()}]]);
+                  });
+            </script>
+
+            <script>
+              document.addEventListener('DOMContentLoaded', function (event) {
+                microlink('.link-preview',{media: ['audio' , 'iframe' , 'image' , 'logo' , 'screenshot' , 'video'],size: 'normal'})
+              })
+            </script>
+           </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+</body>
+
+<div class="modal" id="InfoModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Estadisticas</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <iframe id="info_frame" src="" height ="450px" width="480px" frameborder="0"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="modal" id="PrevModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Preview</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div align="center" class="modal-body p-5">
+        <a id="prev" th:href="${longUrl}" class="link-preview" target="_blank"></a>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+<div class="modal" id="QRModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">QR</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div align="center" class="modal-body p-5">
+        <div id="qrcode"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    localStorage.setItem("urls",JSON.stringify([]))
+    actualizarLocalStorage();
+  });
+</script>
+
+<script th:inline="javascript">
+  function actualizarLocalStorage(){
+     var url = [[${urls}]];
+     localStorage.setItem("urls",JSON.stringify(url));
+  };
+</script>
+
+</html>

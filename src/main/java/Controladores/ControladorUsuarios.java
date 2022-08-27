@@ -28,7 +28,7 @@ public class ControladorUsuarios {
         app.routes(() -> {
             path("/login",() -> {
                 get("/",ctx -> {
-                    ctx.render("templates/login.html");
+                    ctx.render("public/templates/login.html");
                 });
                 post("/",ctx -> {
                     String usuario = ctx.formParam("user");
@@ -55,7 +55,7 @@ public class ControladorUsuarios {
             });
             path("/registrar",() -> {
                 get("/",ctx -> {
-                    ctx.render("templates/register.html");
+                    ctx.render("public/templates/register.html");
                 });
                 post("/",ctx -> {
                     String usuario = ctx.formParam("user");
@@ -93,7 +93,7 @@ public class ControladorUsuarios {
                     modelo.put("usuario",ctx.cookie("usuario"));
                     modelo.put("role",ctx.cookie("role"));
                     modelo.put("pag",Integer.parseInt(pag));
-                    ctx.render("/templates/listado_usuarios.html",modelo);
+                    ctx.render("/public/templates/listado_usuarios.html",modelo);
                 });
                 get("/eliminar",ctx -> {
                     String usuario = ctx.queryParam("usuario");
