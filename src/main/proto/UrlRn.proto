@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package urlrn;
+
+message UrlRequest{
+  string shortUrl=1;
+}
+
+message UrlResponse{
+  string longUrl=1;
+  string shortUrl=2;
+  string usuario=3;
+  string fecha=4;
+}
+
+message CrearUrlRequest{
+  string longUrl=1;
+  string usuario=2;
+}
+
+message listarUrlsRequest{
+  string usuario=1;
+  string fecha=2;
+}
+
+message listarUrlsResponse{
+  repeated CrearListarUrlsResponse url = 1;
+}
+
+message CrearListarUrlsResponse{
+  string longUrl=1;
+  string shortUrl=2;
+  string fecha=3;
+  string click_total=4;
+  string click_hoy=5;
+  map<string, string> browser_clicks = 6;
+  map<string, string> so_clicks = 7;
+  map<string, string> hours_clicks = 8;
+}
+
+message CrearUrlResponse{
+  string longUrl=1;
+  string shortUrl=2;
+  string fecha=3;
+  string click_total=4;
+  string click_hoy=5;
+  map<string, string> browser_clicks = 6;
+  map<string, string> so_clicks = 7;
+  map<string, string> hours_clicks = 8;
+}
+
+service UrlRn{
+  rpc getUrl(UrlRequest) returns (UrlResponse);
+  rpc createUrl(CrearUrlRequest) returns (CrearUrlResponse);
+  rpc listarUrl(listarUrlsRequest) returns (listarUrlsResponse);
+}

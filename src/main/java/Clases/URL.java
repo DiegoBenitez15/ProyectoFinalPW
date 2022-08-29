@@ -73,6 +73,11 @@ public class URL {
         return dateFormat.format(this.fecha_creacion);
     }
 
+    public String getDateString(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(this.fecha_creacion);
+    }
+
     public void setFecha_creacion(Date fecha_creacion) {
         this.fecha_creacion = fecha_creacion;
     }
