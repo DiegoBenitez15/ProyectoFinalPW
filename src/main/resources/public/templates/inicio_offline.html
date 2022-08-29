@@ -24,7 +24,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/inicio/sinconexion">Inicio</a>
                 </li>
-                <li class="nav-item">
+                <li id="lista" style="display:none" class="nav-item">
                     <a class="nav-link" href="/listado/sinconexion">Listado</a>
                 </li>
             </ul>
@@ -44,6 +44,15 @@
 </body>
 
 <script>
+
+    $(document).ready(function(){
+        var usuario = localStorage.getItem("usuario");
+
+        if(usuario != ""){
+            $("#lista").css("display", "");
+        }
+    });
+
     window.addEventListener('online', function(e) {
       window.open('/inicio','_self');
     }, false);
