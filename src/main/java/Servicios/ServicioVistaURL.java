@@ -103,10 +103,10 @@ public class ServicioVistaURL extends GestionDb<VisitaURL>{
         return resultado;
     }
 
-    public HashMap<String,Integer> getBroserWS(int id){
+    public HashMap<String,String> getBroserWS(int id){
         EntityManager em = getEntityManager();
         List<String> browser = Arrays.asList("Chrome", "Firefox", "Opera", "Internet Explorer", "Safari","UnKnown");
-        HashMap<String,Integer> resultado = new HashMap<String,Integer>();
+        HashMap<String,String> resultado = new HashMap<String,String>();
         for(int i = 0;i < browser.size();i++) {
             List<VisitaURL> urls;
             try {
@@ -114,16 +114,16 @@ public class ServicioVistaURL extends GestionDb<VisitaURL>{
             } catch (NoResultException e) {
                 urls = new ArrayList<>();
             }
-            resultado.put(browser.get(i),urls.size());
+            resultado.put(browser.get(i),String.valueOf(urls.size()));
         }
 
         return resultado;
     }
 
-    public HashMap<String,Integer> getSoWS(int id){
+    public HashMap<String,String> getSoWS(int id){
         EntityManager em = getEntityManager();
         List<String> browser = Arrays.asList("Windows", "Apple", "Unix","Android","UnKnown");
-        HashMap<String,Integer> resultado = new HashMap<String,Integer>();
+        HashMap<String,String> resultado = new HashMap<String,String>();
         for(int i = 0;i < browser.size();i++) {
             List<VisitaURL> urls;
             try {
@@ -131,15 +131,15 @@ public class ServicioVistaURL extends GestionDb<VisitaURL>{
             } catch (NoResultException e) {
                 urls = new ArrayList<>();
             }
-            resultado.put(browser.get(i),urls.size());
+            resultado.put(browser.get(i),String.valueOf(urls.size()));
         }
 
         return resultado;
     }
 
-    public HashMap<String,Integer> getClicksHoursWS(int id,String fecha){
+    public HashMap<String,String> getClicksHoursWS(int id,String fecha){
         EntityManager em = getEntityManager();
-        HashMap<String,Integer> resultado = new HashMap<String,Integer>();
+        HashMap<String,String> resultado = new HashMap<String,String>();
 
         for(int i=0;i<24;i++){
             List<VisitaURL> urls;
@@ -148,7 +148,7 @@ public class ServicioVistaURL extends GestionDb<VisitaURL>{
             }catch (NoResultException e){
                 urls = new ArrayList<>();
             }
-            resultado.put(i + ":00",urls.size());
+            resultado.put(i + ":00",String.valueOf(urls.size()));
         }
 
         return resultado;

@@ -2,9 +2,11 @@ import Controladores.ControladorURL;
 import Controladores.ControladorUsuarios;
 import Controladores.SoapControlador;
 import Servicios.BootStrapServices;
+import Servicios.ServicioGrpc;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -12,7 +14,7 @@ public class main {
 
     private static String modoConexion = "";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
         if(args.length >= 1){
             modoConexion = args[0];
             System.out.println("Modo de Operacion: "+modoConexion);
@@ -41,5 +43,7 @@ public class main {
 
         new ControladorUsuarios(app).aplicarRuta();
         new ControladorURL(app).aplicarRuta();
+
+        new ServicioGrpc().start();
     }
 }
