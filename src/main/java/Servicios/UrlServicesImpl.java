@@ -1,5 +1,6 @@
 package Servicios;
 
+import Clases.Imagen;
 import Clases.URL;
 import Clases.Usuario;
 import Clases.VisitaURL;
@@ -15,6 +16,7 @@ public class UrlServicesImpl extends UrlRnGrpc.UrlRnImplBase {
     private ServicioURL surl = ServicioURL.getInstancia();
     private ServicioVistaURL svurl = ServicioVistaURL.getInstancia();
     private ServicioUsuario su = ServicioUsuario.getInstancia();
+    private Imagen img = Imagen.getInstancia();
 
     @Override
     public void getUrl(UrlRnOuterClass.UrlRequest request, StreamObserver<UrlRnOuterClass.UrlResponse> responseObserver){
@@ -83,6 +85,7 @@ public class UrlServicesImpl extends UrlRnGrpc.UrlRnImplBase {
                 .setFecha(url.getFechaString())
                 .setClickTotal(String.valueOf(svurl.getClicksTotal((int) url.getId())))
                 .setClickHoy(String.valueOf(svurl.getClicksHoy((int) url.getId())))
+                .setImage(img.getByteArrayFromImageURL(url.getLongUrl()))
                 .putAllBrowserClicks(svurl.getBroserWS((int) url.getId()))
                 .putAllSoClicks(svurl.getSoWS((int) url.getId()))
                 .putAllHoursClicks(svurl.getClicksHoursWS((int) url.getId(),url.getDateString()))

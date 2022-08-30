@@ -47,6 +47,7 @@ message CrearUrlResponse{
   map<string, string> browser_clicks = 6;
   map<string, string> so_clicks = 7;
   map<string, string> hours_clicks = 8;
+  string image=9;
 }
 
 service UrlRn{
