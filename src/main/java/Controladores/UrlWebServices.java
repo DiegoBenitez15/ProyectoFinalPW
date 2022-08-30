@@ -93,6 +93,10 @@ public class UrlWebServices {
 
         String shortUrl = surl.createShortLink(longUrl,usuario);
 
+        if(Objects.equals(shortUrl, "STATUS:404")){
+            return "ERROR";
+        }
+
         return this.getURLEstadisticas(shortUrl);
     }
 

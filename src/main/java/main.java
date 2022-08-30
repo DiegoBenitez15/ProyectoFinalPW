@@ -1,9 +1,11 @@
 import Controladores.ControladorURL;
 import Controladores.ControladorUsuarios;
+import Controladores.RestControlador;
 import Controladores.SoapControlador;
 import Servicios.BootStrapServices;
 import Servicios.ServicioGrpc;
 import io.javalin.Javalin;
+import io.javalin.core.util.RouteOverviewPlugin;
 import io.javalin.http.staticfiles.Location;
 
 import java.io.IOException;
@@ -32,6 +34,7 @@ public class main {
                 staticFileConfig.location = Location.CLASSPATH;
             });
             config.enableCorsForAllOrigins();
+            config.registerPlugin(new RouteOverviewPlugin("/rutas"));
             config.server(() -> {
                 return new SoapControlador().agregarWebServicesSoap();
             });
@@ -43,6 +46,7 @@ public class main {
 
         new ControladorUsuarios(app).aplicarRuta();
         new ControladorURL(app).aplicarRuta();
+        new RestControlador(app).aplicarRuta();
 
         new ServicioGrpc().start();
     }
