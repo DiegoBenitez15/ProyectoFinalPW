@@ -25,7 +25,7 @@ public class ServicioGrpc {
                 .clientAuth(ClientAuth.OPTIONAL)
                 .build();
 
-        Server server = NettyServerBuilder.forPort(9090)
+        Server server = NettyServerBuilder.forAddress(new InetSocketAddress(9090))
                 .addService(new UrlServicesImpl())
                 .sslContext(sslContext)
                 .build();
