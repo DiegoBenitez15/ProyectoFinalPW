@@ -1,5 +1,6 @@
 package Controladores;
 
+import Clases.Imagen;
 import Clases.URL;
 import Clases.UrlEstadisticas;
 import Clases.Usuario;
@@ -19,6 +20,7 @@ public class UrlWebServices {
     private ServicioURL surl = ServicioURL.getInstancia();
     private ServicioUsuario su = ServicioUsuario.getInstancia();
     private ServicioVistaURL svurl = ServicioVistaURL.getInstancia();
+    private Imagen img = Imagen.getInstancia();
 
     @WebMethod
     public URL getbyShortUrl(String ShortUrl){
@@ -79,6 +81,7 @@ public class UrlWebServices {
         result.put("browser_clicks",svurl.getBroserWS((int) url.getId()));
         result.put("so_clicks",svurl.getSoWS((int) url.getId()));
         result.put("hour_clicks",svurl.getClicksHoursWS((int) url.getId(),url.getFechaString()));
+        result.put("image",img.getByteArrayFromImageURL(url.getLongUrl()));
 
 
         return result.toString();
