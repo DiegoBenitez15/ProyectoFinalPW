@@ -96,9 +96,13 @@ public class ControladorURL {
                     HashMap<String,Object> modelo = new HashMap<String,Object>();
 
                     if(ctx.cookie("usuario") != null) {
-                        modelo.put("urls", surl.findByUser(ctx.cookie("usuario"), ctx.cookie("role")));
+                        List<URL> urls = surl.findByUser(ctx.cookie("usuario"), ctx.cookie("role"));
+                        modelo.put("urls", urls);
+                        modelo.put("size",urls.size());
                     }else{
-                        modelo.put("urls", surl.findByUser(ctx.req.getSession().getId(),"2"));
+                        List<URL> urls = surl.findByUser(ctx.req.getSession().getId(),"2");
+                        modelo.put("urls", urls);
+                        modelo.put("size",urls.size());
                     }
                     modelo.put("usuario",ctx.cookie("usuario"));
                     modelo.put("role",ctx.cookie("role"));
