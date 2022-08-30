@@ -93,22 +93,21 @@ public class RestControlador {
 
 
                 //listar urls por usuario seleccionado
-                get("/usuarios/{username}", ctx -> {
+                get("/usuarios/{username}/fecha/{fecha}", ctx -> {
                     String username = ctx.pathParam("username");
-                    List<URL> urls = uws.listarURL(username);
+                    String fecha = ctx.pathParam("fecha");
+                    String urls = uws.getListadoURLEstadisticas(username,fecha);
 
 
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("user", username);
-                    jsonObject.put("urls", "No tiene urls...");
 
-                    if(urls.size() > 0){
-                        jsonObject.remove("urls");
-
-                        for (Object url: urls ) {
-                            jsonObject.accumulate("urls", new JSONObject(url));
-                        }
+                    if(urls.equals("ERRPOR")){
+                        jsonObject.put("error", "NO EXISTE EL USUARIO SOLICITADO");
+                    }else{
+                        jsonObject.put("urls", urls);
                     }
+
 
                     ctx.result(jsonObject.toString());
                 });
@@ -121,10 +120,15 @@ public class RestControlador {
                     String link = ctx.queryParam("url");
                     String shortLink = uws.crearShortUrl(link,username);
 
+                    JSONObject jsonObject = new JSONObject();
 
-                    JSONObject jsonObject = new JSONObject(shortLink);
-
-                    jsonObject.put("user", username);
+                    if(shortLink != "ERROR") {
+                        jsonObject = new JSONObject(shortLink);
+                        jsonObject.put("user", username);
+                    }else
+                    {
+                        jsonObject.put("Error", "No se encontro el usuario o la URL");
+                    }
 
                     ctx.result(jsonObject.toString());
                 });
