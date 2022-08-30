@@ -3,8 +3,10 @@ package Clases;
 import jakarta.persistence.*;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 @Entity
 public class VisitaURL {
@@ -20,7 +22,7 @@ public class VisitaURL {
     @Column
     private String so;
     @Column
-    private Date fecha_registro;
+    private Date fecha_registro = this.setFecha();
 
     public VisitaURL() {
     }
@@ -30,7 +32,6 @@ public class VisitaURL {
         this.navegador = navegador;
         this.ip = ip;
         this.so = so;
-        this.fecha_registro = new Date();
     }
 
     public VisitaURL(URL url) {
@@ -60,6 +61,18 @@ public class VisitaURL {
 
     public void setSo(String so) {
         this.so = so;
+    }
+
+    public Date setFecha(){
+        Date hoy = new Date();
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        isoFormat.setTimeZone(TimeZone.getTimeZone("America/Caracas"));
+        String hoy_string = isoFormat.format(hoy);
+        try {
+            return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(hoy_string);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getFechaString(){
