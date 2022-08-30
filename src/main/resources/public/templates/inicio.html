@@ -33,9 +33,9 @@
         <script>
             $(document).ready(function(){
                 if(location.hostname === "localhost"){
-                    $("#resultado").text(location.hostname + ":" + location.port + "/sl/" + [[${resultado}]]);
+                    $("#resultado").text(location.hostname + ":" + location.port + "/sl/" + "[[${resultado}]]");
                 }else{
-                    $("#resultado").text(location.hostname + "/sl/" + [[${resultado}]]);
+                    $("#resultado").text(location.hostname + "/sl/" + "[[${resultado}]]");
                 }
             });
         </script>

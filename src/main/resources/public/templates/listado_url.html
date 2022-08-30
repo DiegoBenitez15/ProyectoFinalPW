@@ -81,20 +81,20 @@
             <script>
                   $(document).ready(function(){
                     if(location.hostname === "localhost"){
-                        $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + ":" + location.port + "/sl/" + [[${url.getShortUrl}]]);
+                        $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + ":" + location.port + "/sl/" + "[[${url.getShortUrl}]]");
                     }else{
-                        $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + "/sl/" + [[${url.getShortUrl}]]);
+                        $("#url" + [[${url.getId()}]] + " td p").text(location.hostname + "/sl/" + "[[${url.getShortUrl}]]");
                     }
                   });
                   /*$("#preview" + [[${url.getId()}]]).click(function(){
                     $("#prev").attr("href", "[[${url.getLongUrl()}]]");
                   });*/
                   $("#info" + [[${url.getId()}]]).click(function(){
-                    document.getElementById("info_frame").src = "/url/estadisticas?id=" + [[${url.getShortURL()}]];
+                    document.getElementById("info_frame").src = "/url/estadisticas?id=" + "[[${url.getId()}]]";
                   });
                   $("#qr" + [[${url.getId()}]]).click(function(){
                       document.getElementById("qrcode").innerHTML = "";
-                      new QRCode(document.getElementById("qrcode"), location.hostname + ":" + location.port + "/url/estadisticas?id=" + [[${url.getId()}]]);
+                      new QRCode(document.getElementById("qrcode"), location.hostname + ":" + location.port + "/url/estadisticas?id=" + "[[${url.getId()}]]");
                   });
             </script>
 
